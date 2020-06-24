@@ -16,7 +16,8 @@
 (defvar vlang-mode-font-lock-keywords
   `((,(regexp-opt vlang-mode-keywords 'symbols) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-types 'symbols) . font-lock-type-face)
-    (,(regexp-opt vlang-mode-constants 'symbols) . font-lock-constant-face)))
+    (,(regexp-opt vlang-mode-constants 'symbols) . font-lock-constant-face)
+    ("\\(?:\\<fn\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(\\)" . font-lock-function-name-face)))
 
 (defvar vlang-mode-syntax-table
   (let ((table (make-syntax-table)))
@@ -29,7 +30,7 @@
   (let* ((bds (bounds-of-thing-at-point 'symbol))
          (start (car bds))
          (end (cdr bds)))
-    (list start end (concatenate 'list vlang-keywords vlang-types vlang-constants) . nil )))
+    (list start end (concatenate 'list vlang-mode-keywords vlang-mode-types vlang-mode-constants) . nil )))
 
 ;;;###autoload
 (define-derived-mode vlang-mode prog-mode "Vlang"

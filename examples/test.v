@@ -6,7 +6,7 @@ const (
 	gen_max = 10000 // max of the generated numbers
 )
 
-fn main() {
+fn main(mut arr []) {
 	rand.intn(gen_max) // skip the first
 	mut arr := []int{}
 	for _ in 0..gen_len {
