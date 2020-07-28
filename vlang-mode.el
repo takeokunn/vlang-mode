@@ -1,6 +1,9 @@
 (defconst vlang-mode-keywords
   '("break" "const" "continue" "defer" "else" "enum" "fn" "for" "go" "goto" "if" "import" "in" "interface" "match" "module" "none" "or" "pub" "return" "struct" "type"))
 
+(defconst vlang-mode-buildins
+  '("mut" "print" "println"))
+
 (defconst vlang-mode-types
   '("bool"
     "string"
@@ -20,16 +23,21 @@
 
 (defvar vlang-mode-font-lock-keywords
   `((,(regexp-opt vlang-mode-keywords 'symbols) . font-lock-keyword-face)
+    (,(regexp-opt vlang-mode-buildins 'symbols) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-types 'symbols) . font-lock-type-face)
     (,(regexp-opt vlang-mode-attributes) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-constants 'symbols) . font-lock-constant-face)
     ("\\(?:\\<fn\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(\\)" . (1 'font-lock-function-name-face))
-    ("\\(`[^`]*`\\)" . font-lock-string-face)))
+    ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" . (1 'font-lock-function-name-face))
+    ("\\(`[^`]*`\\)" . font-lock-string-face)
+    ("\\('[^']*'\\)" . font-lock-string-face)))
 
 (defvar vlang-mode-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry ?\/ ". 12b" table)
     (modify-syntax-entry ?\n "> b" table)
+    (modify-syntax-entry ?\" "\"" table)
+    (modify-syntax-entry ?\' "\"" table)
     table))
 
 (defun vlang-mode-completion-at-point ()
