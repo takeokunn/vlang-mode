@@ -1,3 +1,5 @@
+(require 'cc-langs)
+
 (defconst vlang-mode-keywords
   '("break" "const" "continue" "defer" "else" "enum" "fn" "for" "go" "goto" "if" "import" "in" "interface" "match" "module" "none" "or" "pub" "return" "struct" "type"))
 
@@ -24,20 +26,14 @@
 (defvar vlang-mode-font-lock-keywords
   `((,(regexp-opt vlang-mode-keywords 'symbols) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-buildins 'symbols) . font-lock-keyword-face)
-    (,(regexp-opt vlang-mode-types 'symbols) . font-lock-type-face)
+    (,(regexp-opt vlang-mode-types 'symbols) . font-lock-function-name-face)
     (,(regexp-opt vlang-mode-attributes) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-constants 'symbols) . font-lock-constant-face)
-    ("\\(?:\\<fn\\s-+&?\\(\\(?:\\sw\\|\\s_\\)+\\)\\s-*(\\)" . (1 'font-lock-function-name-face))
-    ("\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" . (1 'font-lock-function-name-face))
-    ("\\(`[^`]*`\\)" . font-lock-string-face)
-    ("\\('[^']*'\\)" . font-lock-string-face)))
+    (".\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" . (1 'font-lock-function-name-face))))
 
 (defvar vlang-mode-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?\/ ". 12b" table)
-    (modify-syntax-entry ?\n "> b" table)
-    (modify-syntax-entry ?\" "\"" table)
-    (modify-syntax-entry ?\' "\"" table)
+    (c-populate-syntax-table table)
     table))
 
 (defun vlang-mode-completion-at-point ()
@@ -51,6 +47,10 @@
 (define-derived-mode vlang-mode prog-mode "Vlang"
   "Major mode for editing Vang"
   :syntax vlang-mode-syntax-table
+
+  ;; indentation
+  (setq indent-tabs-mode t)
+  (setq tab-width 4)
 
   ;; font-lock
   (setq font-lock-multiline t)

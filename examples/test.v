@@ -6,6 +6,9 @@ const (
 	gen_max = 10000 // max of the generated numbers
 )
 
+/* fdsafsafsda
+*/
+
 fn main(mut arr []) {
 	rand.intn(gen_max) // skip the first
 	mut arr := []int{}
@@ -15,7 +18,6 @@ fn main(mut arr []) {
 	println('length of random array is $arr.len')
 	println('before quick sort whether array is sorted: ${is_sorted(arr)}')
 	quick_sort(mut arr, 0, arr.len-1)
-	println('after quick sort whether array is sorted: ${is_sorted(arr)}')
 }
 
 fn quick_sort(mut arr []int, l int, r int) {
