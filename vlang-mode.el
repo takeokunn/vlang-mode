@@ -4,7 +4,7 @@
   '("break" "const" "continue" "defer" "else" "enum" "fn" "for" "go" "goto" "if" "import" "in" "interface" "match" "module" "none" "or" "pub" "return" "struct" "type"))
 
 (defconst vlang-mode-buildins
-  '("mut" "print" "println"))
+  '("mut"))
 
 (defconst vlang-mode-types
   '("bool"
@@ -29,7 +29,22 @@
     (,(regexp-opt vlang-mode-types 'symbols) . font-lock-function-name-face)
     (,(regexp-opt vlang-mode-attributes) . font-lock-keyword-face)
     (,(regexp-opt vlang-mode-constants 'symbols) . font-lock-constant-face)
-    (".\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" . (1 'font-lock-function-name-face))))
+
+    ;; for commnet
+    ("\\(`[^`]*`\\)" . font-lock-string-face)
+
+    ;; for function name
+    (".\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*(" . (1 'font-lock-function-name-face))
+    (".\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*<[a-zA-Z0-9_]+>(" . (1 'font-lock-function-name-face))
+
+    ;; for function type
+    (".\\(\\_<\\(?:\\sw\\|\\s_\\)+?\\_>\\)\\s-*<[a-zA-Z0-9_]+>(" . (1 'font-lock-function-name-face))
+
+    ;; for struct
+    ("\\<struct\\s-+\\(\\sw+\\)" . (1 'font-lock-type-face))
+
+    ;; for generics
+    ("<\\(\\sw+\\)>" . (1 'font-lock-type-face))))
 
 (defvar vlang-mode-syntax-table
   (let ((table (make-syntax-table)))
@@ -41,7 +56,7 @@
   (let* ((bds (bounds-of-thing-at-point 'symbol))
          (start (car bds))
          (end (cdr bds)))
-    (list start end (concatenate 'list vlang-mode-keywords vlang-mode-types vlang-mode-constants) . nil )))
+    (list start end (concatenate 'list vlang-mode-keywords vlang-mode-types vlang-mode-constants) . nil)))
 
 ;;;###autoload
 (define-derived-mode vlang-mode prog-mode "Vlang"
